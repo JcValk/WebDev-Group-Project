@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Club - Prototype v1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>University Club</h1>
+            </div>
+            <button class="nav-toggle" id="navToggle">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#announcements" class="nav-link">Announcements</a></li>
+                <li><a href="#events" class="nav-link">Events</a></li>
+                <li><a href="#members" class="nav-link">Members</a></li>
+                <li><a href="#join" class="nav-link">Join Us</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>Welcome to Our University Club</h2>
+            <p>Connect with members and participate in club activities</p>
+            <a href="#join" class="btn btn-primary">Join Our Community</a>
+        </div>
+    </section>
+
+    <section id="announcements" class="announcements">
+        <div class="container">
+            <h2>Latest Announcements</h2>
+            <div class="announcements-grid" id="announcementsGrid">
+            </div>
+        </div>
+    </section>
+
+    <section id="events" class="events">
+        <div class="container">
+            <h2>Upcoming Events</h2>
+            
+            <div class="filter-section">
+                <input 
+                    type="text" 
+                    id="eventSearch" 
+                    placeholder="Search events..." 
+                    class="search-box"
+                >
+                <select id="eventFilter" class="filter-dropdown">
+                    <option value="">All Categories</option>
+                    <option value="workshop">Workshop</option>
+                    <option value="meeting">Meeting</option>
+                    <option value="social">Social</option>
+                    <option value="competition">Competition</option>
+                </select>
+            </div>
+
+            <div class="events-grid" id="eventsGrid">
+            </div>
+
+            <div class="pagination" id="pagination">
+            </div>
+        </div>
+    </section>
+
+    <section id="members" class="members">
+        <div class="container">
+            <h2>Club Members</h2>
+            <div class="members-list" id="membersList">
+            </div>
+            <p class="member-count" id="memberCount">Total Members: 0</p>
+        </div>
+    </section>
+
+    <section id="join" class="join-section">
+        <div class="container">
+            <h2>Become a Member</h2>
+            <div class="join-content">
+                <div class="join-info">
+                    <h3>Membership Benefits</h3>
+                    <ul>
+                        <li>Access to exclusive events and workshops</li>
+                        <li>Network with tech enthusiasts</li>
+                        <li>Learn new skills from industry experts</li>
+                        <li>Project collaboration opportunities</li>
+                        <li>Career development resources</li>
+                    </ul>
+                </div>
+                <form id="joinForm" class="join-form">
+                    <h3>Register Here</h3>
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                        <span class="error" id="fullNameError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                        <span class="error" id="emailError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="studentId">Student ID *</label>
+                        <input type="text" id="studentId" name="studentId" required>
+                        <span class="error" id="studentIdError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="department">Department/Faculty *</label>
+                        <select id="department" name="department" required>
+                            <option value="">Select Department</option>
+                            <option value="engineering">Engineering</option>
+                            <option value="science">Science</option>
+                            <option value="business">Business</option>
+                            <option value="arts">Arts</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <span class="error" id="departmentError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="interests">Interests (comma-separated)</label>
+                        <input type="text" id="interests" name="interests" placeholder="e.g., AI, Web Dev, Cybersecurity">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Register as Member</button>
+                    <span class="success-message" id="successMessage"></span>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Get In Touch</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <p><strong>Email:</strong> club@university.edu</p>
+                    <p><strong>Phone:</strong> +1 (555) 123-4567</p>
+                    <p><strong>Location:</strong> Building A, Room 301</p>
+                    <p><strong>Meeting Time:</strong> Every Thursday, 5:00 PM</p>
+                </div>
+                <form id="contactForm" class="contact-form">
+                    <h3>Send us a Message</h3>
+                    <div class="form-group">
+                        <label for="contactName">Name *</label>
+                        <input type="text" id="contactName" name="contactName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactEmail">Email *</label>
+                        <input type="email" id="contactEmail" name="contactEmail" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Subject *</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 University Club. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Follow Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="java.js"></script>
+</body>
+</html>
