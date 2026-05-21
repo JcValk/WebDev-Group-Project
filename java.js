@@ -82,8 +82,8 @@ if (eventCategory){
 const registerButtons = document.querySelectorAll(".register-btn");
 registerButtons.forEach(function(button){
   button.addEventListener("click", function(){
-    button.innerHTML = "Registered ✓";
-    button.style.background = "#2d6a4f";
+    //button.innerHTML = "Registered ✓";
+    //button.style.background = "#2d6a4f";
 
   });
 
