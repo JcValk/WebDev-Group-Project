@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 21, 2026 at 11:48 AM
+-- Generation Time: May 18, 2026 at 08:23 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,34 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `uniclub`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `entitlements`
---
-
-CREATE TABLE `entitlements` (
-  `username` int(12) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `role` enum('Admin','Member') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `entitlements`
---
-
-INSERT INTO `entitlements` (`username`, `password`, `role`) VALUES
-(2016384013, 'Uniclub123!', 'Member'),
-(2022840173, 'Uniclub123!', 'Member'),
-(2022948103, 'Uniclub123!', 'Member'),
-(2023947294, 'Uniclub123!', 'Member'),
-(2023948204, 'Uniclub123!', 'Member'),
-(2024859304, 'Uniclub123!', 'Member'),
-(2024984028, 'Uniclub123!', 'Admin'),
-(2026849305, 'Uniclub123!', 'Admin'),
-(2026851243, 'Uniclub123!', 'Member'),
-(2026961948, 'Uniclub123!', 'Member');
 
 -- --------------------------------------------------------
 
