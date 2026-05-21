@@ -631,6 +631,42 @@ body{
   text-align:center;
 }
 
+.eventreg{
+  background:#e8dfd1;
+  padding:40px;
+  border-radius:24px;
+  text-align:center;
+}
+
+.eventreg h2{
+  margin-bottom:25px;
+  font-size:2rem;
+  text-align:center;
+}
+
+.eventreg input{
+  width:30%;
+  padding:16px;
+  margin-bottom:18px;
+  border:none;
+  border-radius:12px;
+  font-size:1rem;
+  text-align:center;
+}
+
+.eventreg button{
+  width:10%;
+  padding:16px;
+  background:#111;
+  color:#fff;
+  border:none;
+  border-radius:12px;
+  font-size:1rem;
+  font-weight:700;
+  cursor:pointer;
+  text-align:center;
+}
+
 @media(max-width:950px){
 
   .hero{
