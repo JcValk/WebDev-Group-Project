@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2026 at 11:53 AM
+-- Generation Time: May 21, 2026 at 11:48 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -139,16 +139,6 @@ ALTER TABLE `event_registration`
 --
 ALTER TABLE `member`
   ADD PRIMARY KEY (`student_id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `event_registration`
---
-ALTER TABLE `event_registration`
-  MODIFY `registration_no` int(12) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
