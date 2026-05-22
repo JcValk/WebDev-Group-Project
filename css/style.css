@@ -646,45 +646,6 @@ body{
   text-align:center;
 }
 
-.eventreg{
-  max-width:600px;
-  margin:auto;
-  padding:0 40px 100px;
-  width:50%;
-  background:#e8dfd1;
-  padding:40px;
-  border-radius:24px;
-  text-align:center;
-}
-
-.eventreg h2{
-  margin-bottom:25px;
-  font-size:2rem;
-  text-align:center;
-}
-
-.eventreg input{
-  width:80%;
-  padding:16px;
-  margin-bottom:18px;
-  border:none;
-  border-radius:12px;
-  font-size:1rem;
-  text-align:center;
-}
-
-.eventreg button{
-  width:20%;
-  padding:16px;
-  background:#111;
-  color:#fff;
-  border:none;
-  border-radius:12px;
-  font-size:1rem;
-  font-weight:700;
-  cursor:pointer;
-  text-align:center;
-}
 
 @media(max-width:950px){
 
