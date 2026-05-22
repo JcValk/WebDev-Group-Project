@@ -574,6 +574,10 @@ body{
   align-items:center;
   gap:30px;
   flex-wrap:wrap;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
 
 .footer-logo span{
@@ -604,8 +608,8 @@ body{
 .login{
   display: flex;
   flex-direction: column;
-  max-width:600px;
-  margin:auto;
+  width:40%;
+  margin:40px auto;
   padding:0 40px 100px;
   background:#e8dfd1;
   padding:40px;
@@ -620,7 +624,7 @@ body{
 }
 
 .login input{
-  width:70%;
+  width:100%;
   padding:16px;
   margin-bottom:18px;
   border:none;
@@ -630,7 +634,7 @@ body{
 }
 
 .login button{
-  width:30%;
+  width:100%;
   padding:16px;
   background:#111;
   color:#fff;
