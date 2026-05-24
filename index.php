@@ -1,3 +1,5 @@
+<?php session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,12 +20,27 @@
   </div>
 
   <div class="nav-links">
-    <a href="index.html" class="active">Home</a>
-    <a href="htmlfiles/about.html">About</a>
-    <a href="htmlfiles/membership.html">Membership</a>
-    <a href="htmlfiles/announcements.html">Announcements</a>
-    <a href="htmlfiles/events.html">Events</a>
-    <a href="phpfiles/authfiles/login.html">Log in</a>
+    <a href="index.php" class="active">Home</a>
+    <a href="phpfiles/about.php">About</a>
+    <a href="phpfiles/membership.php">Membership</a>
+    <a href="phpfiles/announcements.php">Announcements</a>
+    <a href="phpfiles/events.php">Events</a>
+    <?php if (isset($_SESSION['username'])): ?>
+
+        <?php if ($_SESSION['role'] === 'admin'): ?>
+            <a href="phpfiles/admin_profilepage.php">Profile</a>
+        <?php else: ?>
+            <a href="phpfiles/member_profilepage.php">Profile</a>
+        <?php endif; ?>
+
+        <a href="phpfiles/logout.php">Logout</a>
+
+    <?php else: ?>
+
+        <a href="phpfiles/login.php">Log in</a>
+
+    <?php endif; ?>
+
   </div>
 </nav>
 
@@ -126,17 +143,17 @@
   </div>
 
   <div class="footer-links">
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="membership.html">Membership</a>
-    <a href="announcements.html">Announcements</a>
-    <a href="events.html">Events</a>
+    <a href="index.php">Home</a>
+    <a href="phpfiles/about.php">About</a>
+    <a href="phpfiles/membership.php">Membership</a>
+    <a href="phpfiles/announcements.php">Announcements</a>
+    <a href="phpfiles/events.php">Events</a>
   </div>
 
   <p>© 2026 UniClub. All rights reserved.</p>
 </footer>
 
-<script src="java.js"></script>
+<script src="backend/java.js"></script>
 
 </body>
 </html>

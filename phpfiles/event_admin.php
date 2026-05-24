@@ -1,10 +1,12 @@
+<?php session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UniClub | Admin</title>
-  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
@@ -18,21 +20,38 @@
   </div>
 
   <div class="nav-links">
-  <div class="nav-links">
-    <a href="profile.php" class="active">Membership</a>
-    <a href="announcements.html">Announcements</a>
-    <a href="event_admin.php">Events</a>
-  </div>
+    <a href="../index.php">Home</a>
+    <a href="about.php">About</a>
+    <a href="membership.php">Membership</a>
+    <a href="announcements.php">Announcements</a>
+    <a href="events.php">Events</a>
+    <?php if (isset($_SESSION['username'])): ?>
+
+        <?php if ($_SESSION['role'] === 'admin'): ?>
+            <a href="admin_profilepage.php">Profile</a>
+        <?php else: ?>
+            <a href="member_profilepage.php">Profile</a>
+        <?php endif; ?>
+
+        <a href="logout.php">Logout</a>
+
+    <?php else: ?>
+
+        <a href="login.php">Log in</a>
+
+    <?php endif; ?>
+
   </div>
 </nav>
-
 <main>
 
 <section class="event-table">
 
 <?php
 
-$conn = new mysqli("localhost", "root", "", "uniclub");
+require 'db.php';
+
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 if (isset($_POST['create_event'])) {
 
@@ -56,11 +75,6 @@ if (isset($_POST['create_event'])) {
     header("Location: " . $_SERVER['PHP_SELF']);
     exit();
 
-}
-
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
 }
 
 $sql = "SELECT event_name, event_date, venue, event_details
@@ -95,8 +109,6 @@ if ($result->num_rows > 0) {
 } else {
     echo "<p>No events found for this year.</p>";
 }
-
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 
 $conn->close();
@@ -133,11 +145,11 @@ if (isset($message)) {
   </div>
 
   <div class="footer-links">
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="membership.html">Membership</a>
-    <a href="announcements.html">Announcements</a>
-    <a href="events.html">Events</a>
+    <a href="../index.php">Home</a>
+    <a href="about.php">About</a>
+    <a href="membership.php">Membership</a>
+    <a href="announcements.php">Announcements</a>
+    <a href="events.php">Events</a>
   </div>
 
   <p>© 2026 UniClub. All rights reserved.</p>
