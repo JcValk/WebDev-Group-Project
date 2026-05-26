@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php
+session_start();
+require_once 'layout.php';
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,36 +16,7 @@
 
 <div class="cursor-circle" id="cursorCircle"></div>
 
-<nav class="navbar">
-  <div class="logo">
-    <span></span>
-    UniClub
-  </div>
-
-  <div class="nav-links">
-    <a href="../index.php">Home</a>
-    <a href="about.php" class="active">About</a>
-    <a href="membership.php">Membership</a>
-    <a href="announcements.php">Announcements</a>
-    <a href="events.php">Events</a>
-    <?php if (isset($_SESSION['username'])): ?>
-
-        <?php if ($_SESSION['role'] === 'admin'): ?>
-            <a href="admin_profilepage.php">Profile</a>
-        <?php else: ?>
-            <a href="member_profilepage.php">Profile</a>
-        <?php endif; ?>
-
-        <a href="logout.php">Logout</a>
-
-    <?php else: ?>
-
-        <a href="login.php">Log in</a>
-
-    <?php endif; ?>
-
-  </div>
-</nav>
+<?php render_header('about'); ?>
 <main>
 
   <section class="page-header">
@@ -85,22 +59,7 @@
 
 </main>
 
-<footer class="footer">
-  <div class="footer-logo">
-    <span></span>
-    UniClub
-  </div>
-
-  <div class="footer-links">
-    <a href="../index.php">Home</a>
-    <a href="about.php">About</a>
-    <a href="membership.php">Membership</a>
-    <a href="announcements.php">Announcements</a>
-    <a href="events.php">Events</a>
-  </div>
-
-  <p>© 2026 UniClub. All rights reserved.</p>
-</footer>
+<?php render_footer(); ?>
 
 <script src="../backend/java.js"></script>
 

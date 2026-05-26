@@ -1,4 +1,12 @@
-<?php session_start(); ?>
+<?php
+session_start();
+require_once 'phpfiles/layout.php';
+
+$profileLink = 'phpfiles/member_profilepage.php';
+if (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin') {
+    $profileLink = 'phpfiles/admin_profilepage.php';
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,36 +21,7 @@
 
 <div class="cursor-circle" id="cursorCircle"></div>
 
-<nav class="navbar">
-  <div class="logo">
-    <span></span>
-    UniClub
-  </div>
-
-  <div class="nav-links">
-    <a href="index.php" class="active">Home</a>
-    <a href="phpfiles/about.php">About</a>
-    <a href="phpfiles/membership.php">Membership</a>
-    <a href="phpfiles/announcements.php">Announcements</a>
-    <a href="phpfiles/events.php">Events</a>
-    <?php if (isset($_SESSION['username'])): ?>
-
-        <?php if ($_SESSION['role'] === 'admin'): ?>
-            <a href="phpfiles/admin_profilepage.php">Profile</a>
-        <?php else: ?>
-            <a href="phpfiles/member_profilepage.php">Profile</a>
-        <?php endif; ?>
-
-        <a href="phpfiles/logout.php">Logout</a>
-
-    <?php else: ?>
-
-        <a href="phpfiles/login.php">Log in</a>
-
-    <?php endif; ?>
-
-  </div>
-</nav>
+<?php render_header('home', true); ?>
 
 <main>
 
@@ -61,8 +40,12 @@
       </p>
 
       <div class="hero-buttons">
-        <a href="htmlfiles/membership.html" class="btn primary">Join the Club →</a>
-        <a href="htmlfiles/events.html" class="btn secondary">View Events</a>
+        <?php if (isset($_SESSION['username'])): ?>
+          <a href="<?= $profileLink ?>" class="btn primary">View Profile</a>
+        <?php else: ?>
+          <a href="phpfiles/membership.php" class="btn primary">Join the Club →</a>
+        <?php endif; ?>
+        <a href="phpfiles/events.php" class="btn secondary">View Events</a>
       </div>
     </div>
 
@@ -136,22 +119,7 @@
 
 </main>
 
-<footer class="footer">
-  <div class="footer-logo">
-    <span></span>
-    UniClub
-  </div>
-
-  <div class="footer-links">
-    <a href="index.php">Home</a>
-    <a href="phpfiles/about.php">About</a>
-    <a href="phpfiles/membership.php">Membership</a>
-    <a href="phpfiles/announcements.php">Announcements</a>
-    <a href="phpfiles/events.php">Events</a>
-  </div>
-
-  <p>© 2026 UniClub. All rights reserved.</p>
-</footer>
+<?php render_footer(); ?>
 
 <script src="backend/java.js"></script>
 

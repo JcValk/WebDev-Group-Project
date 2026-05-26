@@ -1,13 +1,22 @@
 <?php
 session_start();
 require 'db.php';
+require_once 'layout.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $username = '';
+    $password = '';
 
-    $stmt = $conn->prepare("SELECT username, password, role FROM entitlements WHERE username = ?");
+    if (isset($_POST['username'])) {
+        $username = $_POST['username'];
+    }
+
+    if (isset($_POST['password'])) {
+        $password = $_POST['password'];
+    }
+
+    $stmt = $conn->prepare("SELECT student_id, password, role FROM member WHERE student_id = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $stmt->store_result();
@@ -17,11 +26,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_result($db_username, $db_password, $role);
         $stmt->fetch();
 
-        if ($password == $db_password) {
+        $passwordIsValid = password_verify($password, $db_password);
+
+        if (!$passwordIsValid && $password == $db_password) {
+            $passwordIsValid = true;
+        }
+
+        if ($passwordIsValid) {
 
             $_SESSION['username'] = $db_username;
             $_SESSION['role'] = $role;
-            echo "<script>alert('Login successful! Welcome, " . htmlspecialchars($role) . ".');</script>";
             switch ($role) {
                 case 'Admin':
                     header("Location: admin_profilepage.php");
@@ -63,36 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="cursor-circle" id="cursorCircle"></div>
 
-<nav class="navbar">
-  <div class="logo">
-    <span></span>
-    UniClub
-  </div>
-
-  <div class="nav-links">
-    <a href="../index.php">Home</a>
-    <a href="about.php">About</a>
-    <a href="membership.php" class="active">Membership</a>
-    <a href="announcements.php">Announcements</a>
-    <a href="events.php">Events</a>
-    <?php if (isset($_SESSION['username'])): ?>
-
-        <?php if ($_SESSION['role'] === 'admin'): ?>
-            <a href="admin_profilepage.php">Profile</a>
-        <?php else: ?>
-            <a href="member_profilepage.php">Profile</a>
-        <?php endif; ?>
-
-        <a href="logout.php">Logout</a>
-
-    <?php else: ?>
-
-        <a href="login.php" class="active">Log in</a>
-
-    <?php endif; ?>
-
-  </div>
-</nav>
+<?php render_header('login'); ?>
 <main>
 
 <section class="login">
@@ -106,24 +91,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 </main>
 
-<footer class="footer">
-  <div class="footer-logo">
-    <span></span>
-    UniClub
-  </div>
+<?php render_footer(); ?>
 
-  <div class="footer-links">
-    <a href="../index.php">Home</a>
-    <a href="about.php">About</a>
-    <a href="membership.php">Membership</a>
-    <a href="announcements.php">Announcements</a>
-    <a href="events.php">Events</a>
-  </div>
-
-  <p>© 2026 UniClub. All rights reserved.</p>
-</footer>
-
-<script src="../../backend/java.js"></script>
+<script src="../backend/java.js"></script>
 
 </body>
 </html>

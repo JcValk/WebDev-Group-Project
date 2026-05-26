@@ -1,4 +1,122 @@
-<?php session_start(); ?>
+<?php session_start();
+require_once 'db.php';
+require_once 'layout.php';
+
+$formMessage = '';
+$formMessageClass = '';
+$firstName = '';
+$lastName = '';
+$email = '';
+$studentId = '';
+$contactNo = '';
+$course = '';
+$batch = '';
+$interests = '';
+$password = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['studentId'])) {
+        $studentId = trim($_POST['studentId']);
+    }
+
+    if (isset($_POST['firstName'])) {
+        $firstName = trim($_POST['firstName']);
+    }
+
+    if (isset($_POST['lastName'])) {
+        $lastName = trim($_POST['lastName']);
+    }
+
+    if (isset($_POST['email'])) {
+        $email = trim($_POST['email']);
+    }
+
+    if (isset($_POST['password'])) {
+        $password = trim($_POST['password']);
+    }
+
+    if (isset($_POST['course'])) {
+        $course = trim($_POST['course']);
+    }
+
+    if (isset($_POST['batch'])) {
+        $batch = trim($_POST['batch']);
+    }
+
+    if (isset($_POST['contactNo'])) {
+        $contactNo = trim($_POST['contactNo']);
+    }
+
+    if (isset($_POST['interests'])) {
+        $interests = trim($_POST['interests']);
+    }
+
+    if ($studentId === '' || $firstName === '' || $lastName === '' || $email === '' || $password === '' || $course === '' || $batch === '' || $contactNo === '') {
+        $formMessage = 'Please complete all required fields.';
+        $formMessageClass = 'error';
+    } elseif (!ctype_digit($studentId) || !ctype_digit($contactNo)) {
+        $formMessage = 'Student ID and contact number must contain numbers only.';
+        $formMessageClass = 'error';
+    } else {
+        $checkStmt = $conn->prepare("SELECT student_id FROM member WHERE student_id = ?");
+        $checkStmt->bind_param("s", $studentId);
+        $checkStmt->execute();
+        $checkStmt->store_result();
+
+        if ($checkStmt->num_rows > 0) {
+            $formMessage = 'A member with this Student ID already exists.';
+            $formMessageClass = 'error';
+        } else {
+            $role = 'Member';
+            $memberStatus = 'New';
+            $dateJoined = date('Y-m-d');
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            $stmt = $conn->prepare(
+                "INSERT INTO member
+                (student_id, password, role, first_name, last_name, course, batch, email, contact_no, interests, member_status, date_joined)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            );
+
+            $stmt->bind_param(
+                "ssssssssssss",
+                $studentId,
+                $hashedPassword,
+                $role,
+                $firstName,
+                $lastName,
+                $course,
+                $batch,
+                $email,
+                $contactNo,
+                $interests,
+                $memberStatus,
+                $dateJoined
+            );
+
+            if ($stmt->execute()) {
+                $formMessage = 'Registration submitted. You can now log in with your Student ID and password.';
+                $formMessageClass = 'success';
+                $firstName = '';
+                $lastName = '';
+                $email = '';
+                $studentId = '';
+                $contactNo = '';
+                $course = '';
+                $batch = '';
+                $interests = '';
+            } else {
+                $formMessage = 'Registration could not be saved. Please try again.';
+                $formMessageClass = 'error';
+            }
+
+            $stmt->close();
+        }
+
+        $checkStmt->close();
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,36 +130,7 @@
 
 <div class="cursor-circle" id="cursorCircle"></div>
 
-<nav class="navbar">
-  <div class="logo">
-    <span></span>
-    UniClub
-  </div>
-
-  <div class="nav-links">
-    <a href="../index.php">Home</a>
-    <a href="about.php">About</a>
-    <a href="membership.php" class="active">Membership</a>
-    <a href="announcements.php">Announcements</a>
-    <a href="events.php">Events</a>
-    <?php if (isset($_SESSION['username'])): ?>
-
-        <?php if ($_SESSION['role'] === 'admin'): ?>
-            <a href="admin_profilepage.php">Profile</a>
-        <?php else: ?>
-            <a href="member_profilepage.php">Profile</a>
-        <?php endif; ?>
-
-        <a href="logout.php">Logout</a>
-
-    <?php else: ?>
-
-        <a href="login.php">Log in</a>
-
-    <?php endif; ?>
-
-  </div>
-</nav>
+<?php render_header('membership'); ?>
 <main>
 
   <section class="page-header">
@@ -98,43 +187,43 @@
   </section>
 
   <section class="form-section">
-    <form id="joinForm" class="join-form">
+    <form id="joinForm" method="POST" class="join-form">
       <h2>Register as Member</h2>
 
+      <?php if ($formMessage !== ''): ?>
+        <p class="form-message <?= htmlspecialchars($formMessageClass) ?>"><?= htmlspecialchars($formMessage) ?></p>
+      <?php endif; ?>
+
       <div class="form-row">
-        <input type="text" id="firstName" placeholder="First Name">
-        <input type="text" id="lastName" placeholder="Last Name">
+        <input type="text" id="firstName" name="firstName" placeholder="First Name" value="<?= htmlspecialchars($firstName) ?>" required>
+        <input type="text" id="lastName" name="lastName" placeholder="Last Name" value="<?= htmlspecialchars($lastName) ?>" required>
       </div>
 
-      <input type="email" id="email" placeholder="Email Address">
-      <input type="text" id="studentId" placeholder="Student ID">
-      <input type="text" id="course" placeholder="Course">
-      <input type="text" id="interests" placeholder="Interests">
+      <div class="form-row">
+        <input type="email" id="email" name="email" placeholder="Email Address" value="<?= htmlspecialchars($email) ?>" required>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+      </div>
+
+      <div class="form-row">
+        <input type="text" id="studentId" name="studentId" placeholder="Student ID" value="<?= htmlspecialchars($studentId) ?>" required>
+        <input type="text" id="contactNo" name="contactNo" placeholder="Contact Number" value="<?= htmlspecialchars($contactNo) ?>" required>
+      </div>
+
+      <div class="form-row">
+        <input type="text" id="course" name="course" placeholder="Course" value="<?= htmlspecialchars($course) ?>" required>
+        <input type="text" id="batch" name="batch" placeholder="Batch" value="<?= htmlspecialchars($batch) ?>" required>
+      </div>
+
+      <input type="text" id="interests" name="interests" placeholder="Interests" value="<?= htmlspecialchars($interests) ?>">
 
       <button type="submit">Submit Registration</button>
 
-      <p id="formMessage"></p>
     </form>
   </section>
 
 </main>
 
-<footer class="footer">
-  <div class="footer-logo">
-    <span></span>
-    UniClub
-  </div>
-
-  <div class="footer-links">
-    <a href="../index.php">Home</a>
-    <a href="about.php">About</a>
-    <a href="membership.php">Membership</a>
-    <a href="announcements.php">Announcements</a>
-    <a href="events.php">Events</a>
-  </div>
-
-  <p>© 2026 UniClub. All rights reserved.</p>
-</footer>
+<?php render_footer(); ?>
 
 <script src="../backend/java.js"></script>
 

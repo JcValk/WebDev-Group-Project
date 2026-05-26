@@ -1,4 +1,13 @@
-<?php session_start(); ?>
+<?php
+session_start();
+require_once 'layout.php';
+require_once 'db.php';
+
+$sql = "SELECT announcement_subject, announcement_detail, announcement_date
+        FROM announcements
+        ORDER BY announcement_date DESC";
+$announcements = $conn->query($sql);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,35 +22,7 @@
 
 <div class="cursor-circle" id="cursorCircle"></div>
 
-<nav class="navbar">
-  <div class="logo">
-    <span></span>
-    UniClub
-  </div>
-
-  <div class="nav-links">
-    <a href="../index.php">Home</a>
-    <a href="about.php">About</a>
-    <a href="membership.php">Membership</a>
-    <a href="announcements.php" class="active">Announcements</a>
-    <a href="events.php">Events</a>
-    <?php if (isset($_SESSION['username'])): ?>
-
-        <?php if ($_SESSION['role'] === 'admin'): ?>
-            <a href="admin_profilepage.php">Profile</a>
-        <?php else: ?>
-            <a href="member_profilepage.php">Profile</a>
-        <?php endif; ?>
-
-        <a href="logout.php">Logout</a>
-
-    <?php else: ?>
-
-        <a href="login.php">Log in</a>
-
-    <?php endif; ?>
-  </div>
-</nav>
+<?php render_header('announcements'); ?>
 <main>
 
   <section class="page-header">
@@ -58,59 +39,30 @@
     </p>
   </section>
 
-  <section class="filter-buttons">
-    <button class="filter-btn active" data-filter="all">All</button>
-    <button class="filter-btn" data-filter="event">Events</button>
-    <button class="filter-btn" data-filter="meeting">Meetings</button>
-    <button class="filter-btn" data-filter="deadline">Deadlines</button>
-  </section>
-
   <section class="announcement-grid">
 
-    <div class="announcement-card" data-category="event">
-      <p class="date">20 MAY</p>
-      <h2>Careers Fair Registration Open</h2>
-      <p>Students can now register for the Annual Careers Fair happening this semester.</p>
-    </div>
-
-    <div class="announcement-card" data-category="deadline">
-      <p class="date">24 MAY</p>
-      <h2>Membership Registration Reminder</h2>
-      <p>Students are encouraged to complete membership registration before the end of the month.</p>
-    </div>
-
-    <div class="announcement-card" data-category="meeting">
-      <p class="date">28 MAY</p>
-      <h2>Club Meeting This Friday</h2>
-      <p>Members are invited to attend the monthly planning and activity meeting.</p>
-    </div>
-
-    <div class="announcement-card" data-category="event">
-      <p class="date">10 JUN</p>
-      <h2>Resume Workshop Coming Soon</h2>
-      <p>A student-focused resume and LinkedIn workshop will be held next month.</p>
-    </div>
+    <?php if ($announcements && $announcements->num_rows > 0): ?>
+      <?php while ($announcement = $announcements->fetch_assoc()): ?>
+        <div class="announcement-card" data-category="announcement">
+          <p class="date"><?= htmlspecialchars(date('d M', strtotime($announcement['announcement_date']))) ?></p>
+          <h2><?= htmlspecialchars($announcement['announcement_subject']) ?></h2>
+          <p><?= htmlspecialchars($announcement['announcement_detail']) ?></p>
+        </div>
+      <?php endwhile; ?>
+    <?php else: ?>
+      <div class="announcement-card">
+        <h2>No announcements yet.</h2>
+        <p>Check back soon for club updates.</p>
+      </div>
+    <?php endif; ?>
 
   </section>
 
 </main>
 
-<footer class="footer">
-  <div class="footer-logo">
-    <span></span>
-    UniClub
-  </div>
+<?php render_footer(); ?>
 
-  <div class="footer-links">
-    <a href="../index.php">Home</a>
-    <a href="about.php">About</a>
-    <a href="membership.php">Membership</a>
-    <a href="announcements.php">Announcements</a>
-    <a href="events.php">Events</a>
-  </div>
-
-  <p>© 2026 UniClub. All rights reserved.</p>
-</footer>
+<?php $conn->close(); ?>
 
 <script src="../backend/java.js"></script>
 

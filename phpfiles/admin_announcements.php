@@ -1,4 +1,22 @@
-<?php session_start(); ?>
+<?php
+session_start();
+require_once 'layout.php';
+
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$role = '';
+if (isset($_SESSION['role'])) {
+    $role = $_SESSION['role'];
+}
+
+if ($role !== 'Admin') {
+    header("Location: member_profilepage.php");
+    exit();
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,36 +31,7 @@
 
 <div class="cursor-circle" id="cursorCircle"></div>
 
-<nav class="navbar">
-  <div class="logo">
-    <span></span>
-    UniClub
-  </div>
-
-  <div class="nav-links">
-    <a href="../index.php">Home</a>
-    <a href="about.php">About</a>
-    <a href="membership.php">Membership</a>
-    <a href="announcements.php">Announcements</a>
-    <a href="events.php">Events</a>
-    <?php if (isset($_SESSION['username'])): ?>
-
-        <?php if ($_SESSION['role'] === 'admin'): ?>
-            <a href="admin_profilepage.php">Profile</a>
-        <?php else: ?>
-            <a href="member_profilepage.php">Profile</a>
-        <?php endif; ?>
-
-        <a href="logout.php">Logout</a>
-
-    <?php else: ?>
-
-        <a href="login.php">Log in</a>
-
-    <?php endif; ?>
-
-  </div>
-</nav>
+<?php render_header('admin_announcements'); ?>
 <main>
 
 <section class="announce-table">
@@ -54,17 +43,27 @@ require 'db.php';
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 if (isset($_POST['create_announcement'])) {
+    $announcementSubject = '';
+    $announcementDetail = '';
+
+    if (isset($_POST['announcement_subject'])) {
+        $announcementSubject = $_POST['announcement_subject'];
+    }
+
+    if (isset($_POST['announcement_detail'])) {
+        $announcementDetail = $_POST['announcement_detail'];
+    }
 
     $stmt = $conn->prepare(
         "INSERT INTO announcements
-        (announcement_subject, announcement_detail)
-        VALUES (?, ?)"
+        (announcement_subject, announcement_detail, announcement_date)
+        VALUES (?, ?, CURDATE())"
     );
 
     $stmt->bind_param(
         "ss",
-        $_POST['announcement_subject'],
-        $_POST['announcement_detail']
+        $announcementSubject,
+        $announcementDetail
     );
 
     $stmt->execute();
@@ -135,24 +134,9 @@ if (isset($message)) {
 
 </main>
 
-<footer class="footer">
-  <div class="footer-logo">
-    <span></span>
-    UniClub
-  </div>
+<?php render_footer(); ?>
 
-  <div class="footer-links">
-    <a href="../index.php">Home</a>
-    <a href="about.php">About</a>
-    <a href="membership.php">Membership</a>
-    <a href="announcements.php">Announcements</a>
-    <a href="events.php">Events</a>
-  </div>
-
-  <p>© 2026 UniClub. All rights reserved.</p>
-</footer>
-
-<script src="java.js"></script>
+<script src="../backend/java.js"></script>
 
 </body>
 </html>
