@@ -5,9 +5,10 @@ if (cursorCircle) {
         cursorCircle.style.left = event.clientX + "px";
         cursorCircle.style.top = event.clientY + "px";
     });
-}
+} //animation for the circle around the cursor
+//doesnt replace the cursor, just adds a circle around it. 
 
-const filterButtons = document.querySelectorAll(".filter-btn"); //random comments
+const filterButtons = document.querySelectorAll(".filter-btn"); 
 const announcementCards = document.querySelectorAll(".announcement-card");
 
 filterButtons.forEach(function(button){
@@ -26,7 +27,7 @@ filterButtons.forEach(function(button){
             }
         });
     });
-});
+}); //animation for all the buttons
 
 const eventSearch = document.getElementById("eventSearch");
 
@@ -44,7 +45,7 @@ if (eventSearch) {
                 : "none";
         });
     });
-}
+} // animation for the panoramo like bar in the index page
 
 const eventCategory = document.getElementById("eventCategory");
 
@@ -65,11 +66,3 @@ if (eventCategory) {
     });
 }
 
-const registerButtons = document.querySelectorAll(".register-btn");
-
-registerButtons.forEach(function(button){
-    button.addEventListener("click", function(){
-        button.innerHTML = "Registered ✓";
-        button.style.background = "#2d6a4f";
-    });
-});
