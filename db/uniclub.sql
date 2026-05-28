@@ -34,17 +34,6 @@ CREATE TABLE `announcements` (
   `announcement_date` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `announcements`
---
-
-INSERT INTO `announcements` (`announcement_id`, `announcement_subject`, `announcement_detail`, `announcement_date`) VALUES
-(1, 'Bake sale participation', 'Our club will participate in the coming university bake sale. Please contact Emily if you would like to pledge any baked goods that we can sell, or if you can donate your time to man the booth.', '2026-05-25'),
-(2, 'School Anniversary Parade', 'We will be helping out the Physics department create a float for our school\'s founding anniversary. Please contact Miranda if you would like to volunteer. The float is at the Physics building gymnasium and will be open for volunteers from 01-05 June 3-6PM. See you there!', '2026-05-24');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `entitlements`
 --
 
